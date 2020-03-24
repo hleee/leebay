@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,7 +33,7 @@ public class Product {
 	@Column(nullable = false, length = 30)
 	private String name;
 
-	@Column(nullable = false, length =200)
+	@Column(nullable = false, length = 200)
 	private String image;
 
 	@Column(nullable = false, length = 50)
@@ -46,5 +48,9 @@ public class Product {
 	private Date createdAt;
 
 	private Boolean isAdded;
+
+	@ManyToOne
+	@JoinColumn(name = "basket_id")
+	private Basket basket;
 
 }

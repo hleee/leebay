@@ -8,6 +8,12 @@ import com.codepresso.leebay.domain.Product;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
-	List<Product> findById(long id);
+	Product findById(long id);
+	
+	List<Product> findFirst6ByIdOrderByIdDesc();
+	
+	List<Product> findByIdEqualsBasketProductIdAndBasketMemberIdEqualsMemberIdOrderByBasketIdDesc(long memberId);
+	
+	
 
 }

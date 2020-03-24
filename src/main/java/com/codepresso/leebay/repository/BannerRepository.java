@@ -8,6 +8,6 @@ import com.codepresso.leebay.domain.Banner;
 
 public interface BannerRepository extends CrudRepository<Banner, Long> {
 
-	List<Banner> find(String content);
+	List<Banner> findFirst5ByIdOrderByIdDesc();
 
 }

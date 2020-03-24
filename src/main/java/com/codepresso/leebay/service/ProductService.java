@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.codepresso.leebay.domain.Basket;
@@ -14,8 +13,8 @@ import com.codepresso.leebay.domain.LogInToken;
 import com.codepresso.leebay.domain.Product;
 import com.codepresso.leebay.domain.ProductAndBasket;
 import com.codepresso.leebay.domain.ProductAndDetail;
-import com.codepresso.leebay.domain.Response;
 import com.codepresso.leebay.repository.BasketRepository;
+import com.codepresso.leebay.repository.DetailRepository;
 import com.codepresso.leebay.repository.LogInTokenRepository;
 import com.codepresso.leebay.repository.MemberRepository;
 import com.codepresso.leebay.repository.ProductRepository;
@@ -37,13 +36,16 @@ public class ProductService {
 	@Autowired
 	public BasketRepository basketRepo;
 
+	@Autowired
+	public DetailRepository detailRepo;
+
 	// 여섯 개씩 조회 (한 페이지 호출)
 	public List<Product> selectSixProducts(String logInTokenString, long page) throws Exception {
 		long offsetValue = (page - 1) * 6;
 		if (logInTokenString == null) {
 			return productRepo.selectSixProducts(offsetValue);
 		} else {
-			LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
+			LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
 			long memberId = logInToken.getMemberId();
 			ProductAndBasket productAndBasket = new ProductAndBasket();
 			productAndBasket.setOffsetValue(offsetValue);
@@ -54,10 +56,9 @@ public class ProductService {
 
 	// 상세 조회
 	public ProductAndDetail selectOneDetail(String logInTokenString, long productId) throws Exception {
-		Response response = new Response();
 		Basket basket = new Basket();
 		LogInToken logInToken = new LogInToken();
-		Product product = productRepo.selectOneProductById(productId);
+		Product product = productRepo.findById(productId);
 		ProductAndDetail productAndDetail = new ProductAndDetail();
 		productAndDetail.setId(product.getId());
 		productAndDetail.setName(product.getName());
@@ -69,18 +70,18 @@ public class ProductService {
 		if (logInTokenString == null) {
 			productAndDetail.setIsAdded(null);
 		} else {
-			logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
+			logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
 			long memberId = logInToken.getMemberId();
 			basket.setMemberId(memberId);
 			basket.setProductId(productId);
-			basket = basketRepo.selectBasketByMemberIdAndProductId(basket);
+			basket = basketRepo.findByMemberIdAndProductId(basket);
 			if (basket != null) {
 				productAndDetail.setIsAdded(true);
 			} else {
 				productAndDetail.setIsAdded(false);
 			}
 		}
-		List<Detail> detailList = productRepo.selectAllDetails(productId);
+		List<Detail> detailList = detailRepo.findByProductId(productId);
 		productAndDetail.setDetail(detailList);
 		return productAndDetail;
 	}

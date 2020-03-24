@@ -19,7 +19,7 @@ public class BannerService {
 	public BannerRepository bannerRepo;
 
 	public Banner[] selectFiveLatestBanners() throws Exception {
-		List<Banner> bannerList = bannerRepo.selectFiveLatestBanners();
+		List<Banner> bannerList = bannerRepo.findFirst5ByIdOrderByIdDesc();
 		Banner[] bannerArray = new Banner[bannerList.size()];
 		for (int i = 0; i < bannerList.size(); i++) {
 			bannerArray[i] = bannerList.get(i);

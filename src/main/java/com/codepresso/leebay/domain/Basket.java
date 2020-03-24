@@ -28,16 +28,16 @@ public class Basket {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Column(nullable = false, name = "basket_id")
 	private long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "basket_member_id")
 	private long memberId;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "basket_product_id")
 	private long productId;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date createdAt;
-
+	
 }

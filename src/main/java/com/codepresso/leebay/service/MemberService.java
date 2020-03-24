@@ -7,15 +7,14 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.codepresso.leebay.domain.EmailCheckToken;
 import com.codepresso.leebay.domain.LogInToken;
 import com.codepresso.leebay.domain.Member;
-import com.codepresso.leebay.domain.Response;
-import com.codepresso.leebay.repository.MemberRepository;
+import com.codepresso.leebay.repository.EmailCheckTokenRepository;
 import com.codepresso.leebay.repository.LogInTokenRepository;
+import com.codepresso.leebay.repository.MemberRepository;
 import com.codepresso.leebay.util.TokenMaker;
 
 @Service
@@ -29,18 +28,21 @@ public class MemberService {
 	@Autowired
 	public LogInTokenRepository logInTokenRepo;
 
+	@Autowired
+	public EmailCheckTokenRepository emailCheckTokenRepo;
+
 	// 이메일 중복 확인
 	public EmailCheckToken insertOneEmailCheckToken(Member enteredEmail) throws Exception {
 		EmailCheckToken emailCheckToken = new EmailCheckToken();
 		Member member = new Member();
 		String email = enteredEmail.getEmail();
-		member = memberRepo.selectOneMemberByEmail(email);
+		member = memberRepo.findByEmail(email);
 		if (member == null) {
 			String emailCheckTokenString = TokenMaker.makeToken();
 			emailCheckToken.setEmail(email);
 			emailCheckToken.setEmailCheckToken(emailCheckTokenString);
-			logInTokenRepo.insertOneEmailCheckToken(emailCheckToken);
-			emailCheckToken = logInTokenRepo.selectOneRowByEmailCheckToken(emailCheckToken);
+			emailCheckTokenRepo.save(emailCheckToken);
+			emailCheckToken = emailCheckTokenRepo.findByEmailCheckToken(emailCheckTokenString);
 			return emailCheckToken;
 		} else {
 			logger.info("Duplicate email found.");
@@ -51,8 +53,7 @@ public class MemberService {
 	// 로그인
 	public LogInToken insertOneLogInToken(Member member) throws Exception {
 		LogInToken logInToken = new LogInToken();
-		Response response = new Response();
-		Member memberInDB = memberRepo.selectOneMemberByEmailAndPassword(member);
+		Member memberInDB = memberRepo.findByEmailAndPassword(member);
 		if (memberInDB == null) {
 			logger.info("ID-password pair not found.");
 			return logInToken;
@@ -63,15 +64,14 @@ public class MemberService {
 			logInToken.setLogInToken(logInTokenString);
 			long memberId = memberInDB.getId();
 			logInToken.setMemberId(memberId);
-			logInTokenRepo.insertOneLogInToken(logInToken);
-			logInToken = logInTokenRepo.selectOneRowByLogInTokenString(logInTokenString);
+			logInTokenRepo.save(logInToken);
+			logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
 			return logInToken;
 		}
 	}
 
 	// 회원 가입
 	public Member insertOneMember(String emailCheckTokenString, Member member) throws Exception {
-		Response responseVO = new Response();
 		Member emptyMember = new Member();
 		if (emailCheckTokenString == null) {
 			logger.info("Check for email duplication.");
@@ -89,7 +89,7 @@ public class MemberService {
 		Date todaysDate = new Date();
 		String todaysDateFormatted = dateFormat.format(todaysDate);
 		int todaysDateInt = Integer.parseInt(todaysDateFormatted);
-		String enteredBirthday = member.getBirthday().replaceAll("\\p{Punct}", "");
+		String enteredBirthday = member.getBirthday().toString().replaceAll("\\p{Punct}", "");
 		int enteredBirthdayInt = Integer.parseInt(enteredBirthday);
 		if (todaysDateInt - enteredBirthdayInt < 80000) {
 			logger.info("Underage.");
@@ -97,8 +97,8 @@ public class MemberService {
 		} else {
 			logger.info("Age OK.");
 		}
-		memberRepo.insertOneMember(member);
-		member = memberRepo.selectOneMemberById(member.getId());
+		memberRepo.save(member);
+		member = memberRepo.findById(member.getId());
 		return member;
 	}
 }

@@ -8,6 +8,6 @@ import com.codepresso.leebay.domain.LogInToken;
 
 public interface LogInTokenRepository extends CrudRepository<LogInToken, String> {
 
-	List<LogInToken> findByToken(String logInToken);
+	List<LogInToken> findByLogInToken(String logInToken);
 
 }

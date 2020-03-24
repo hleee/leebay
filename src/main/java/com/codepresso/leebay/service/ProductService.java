@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 import com.codepresso.leebay.domain.Basket;
 import com.codepresso.leebay.domain.Detail;
 import com.codepresso.leebay.domain.LogInToken;
-import com.codepresso.leebay.domain.ProductAndBasketVO;
-import com.codepresso.leebay.domain.ProductAndDetailVO;
 import com.codepresso.leebay.domain.Product;
-import com.codepresso.leebay.domain.ResponseVO;
+import com.codepresso.leebay.domain.ProductAndBasket;
+import com.codepresso.leebay.domain.ProductAndDetail;
+import com.codepresso.leebay.domain.Response;
 import com.codepresso.leebay.repository.BasketRepository;
+import com.codepresso.leebay.repository.LogInTokenRepository;
 import com.codepresso.leebay.repository.MemberRepository;
 import com.codepresso.leebay.repository.ProductRepository;
-import com.codepresso.leebay.repository.LogInTokenRepository;
 
 @Service
 public class ProductService {
@@ -26,73 +26,62 @@ public class ProductService {
 	static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
 	@Autowired
-	public MemberRepository memberDAO;
+	public MemberRepository memberRepo;
 
 	@Autowired
-	public ProductRepository productDAO;
+	public ProductRepository productRepo;
 
 	@Autowired
-	public LogInTokenRepository tokenDAO;
+	public LogInTokenRepository logInTokenRepo;
 
 	@Autowired
-	public BasketRepository basketDAO;
+	public BasketRepository basketRepo;
 
 	// 여섯 개씩 조회 (한 페이지 호출)
-	public ResponseVO selectSixProducts(String logInToken, long page) throws Exception {
-		ResponseVO responseVO = new ResponseVO();
+	public List<Product> selectSixProducts(String logInTokenString, long page) throws Exception {
 		long offsetValue = (page - 1) * 6;
-		List<Product> tokenNullProductVOList = productDAO.selectSixProducts(offsetValue);
-		if (logInToken == null) {
-			responseVO.setCode(HttpStatus.OK.value());
-			responseVO.setMessage("Success");
-			responseVO.setData(tokenNullProductVOList);
+		if (logInTokenString == null) {
+			return productRepo.selectSixProducts(offsetValue);
 		} else {
-			ProductAndBasketVO productAndBasketVO = new ProductAndBasketVO();
-			LogInToken logInTokenVO = tokenDAO.selectOneRowByLogInToken(logInToken);
-			long memberID = logInTokenVO.getMemberID();
-			productAndBasketVO.setOffsetValue(offsetValue);
-			productAndBasketVO.setMemberID(memberID);
-			List<Product> tokenNotNullProductVOList = productDAO.selectSixProductsWithBasketInfo(productAndBasketVO);
-			responseVO.setCode(HttpStatus.OK.value());
-			responseVO.setMessage("Success");
-			responseVO.setData(tokenNotNullProductVOList);
+			LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
+			long memberID = logInToken.getMemberID();
+			ProductAndBasket productAndBasket = new ProductAndBasket();
+			productAndBasket.setOffsetValue(offsetValue);
+			productAndBasket.setMemberID(memberID);
+			return productRepo.selectSixProductsWithBasketInfo(productAndBasket);
 		}
-		return responseVO;
 	}
 
 	// 상세 조회
-	public ResponseVO selectOneDetail(String logInToken, long productID) throws Exception {
-		ResponseVO responseVO = new ResponseVO();
-		Basket basketVO = new Basket();
-		LogInToken logInTokenVO = new LogInToken();
-		Product productVO = productDAO.selectOneProductByID(productID);
-		ProductAndDetailVO productAndDetailVO = new ProductAndDetailVO();
-		productAndDetailVO.setId(productVO.getId());
-		productAndDetailVO.setName(productVO.getName());
-		productAndDetailVO.setImage(productVO.getImage());
-		productAndDetailVO.setDescription(productVO.getDescription());
-		productAndDetailVO.setOriginalPrice(productVO.getOriginalPrice());
-		productAndDetailVO.setDiscountedPrice(productVO.getDiscountedPrice());
-		productAndDetailVO.setCreatedAt(productVO.getCreatedAt());
-		if (logInToken == null) {
-			productAndDetailVO.setIsAdded(null);
+	public ProductAndDetail selectOneDetail(String logInTokenString, long productID) throws Exception {
+		Response response = new Response();
+		Basket basket = new Basket();
+		LogInToken logInToken = new LogInToken();
+		Product product = productRepo.selectOneProductByID(productID);
+		ProductAndDetail productAndDetail = new ProductAndDetail();
+		productAndDetail.setId(product.getId());
+		productAndDetail.setName(product.getName());
+		productAndDetail.setImage(product.getImage());
+		productAndDetail.setDescription(product.getDescription());
+		productAndDetail.setOriginalPrice(product.getOriginalPrice());
+		productAndDetail.setDiscountedPrice(product.getDiscountedPrice());
+		productAndDetail.setCreatedAt(product.getCreatedAt());
+		if (logInTokenString == null) {
+			productAndDetail.setIsAdded(null);
 		} else {
-			logInTokenVO = tokenDAO.selectOneRowByLogInToken(logInToken);
-			long memberID = logInTokenVO.getMemberID();
-			basketVO.setMemberID(memberID);
-			basketVO.setProductID(productID);
-			basketVO = basketDAO.selectBasketByMemberIDAndProductID(basketVO);
-			if (basketVO != null) {
-				productAndDetailVO.setIsAdded(true);
+			logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
+			long memberID = logInToken.getMemberID();
+			basket.setMemberID(memberID);
+			basket.setProductID(productID);
+			basket = basketRepo.selectBasketByMemberIDAndProductID(basket);
+			if (basket != null) {
+				productAndDetail.setIsAdded(true);
 			} else {
-				productAndDetailVO.setIsAdded(false);
+				productAndDetail.setIsAdded(false);
 			}
 		}
-		List<Detail> detailVOList = productDAO.selectAllDetails(productID);
-		productAndDetailVO.setDetail(detailVOList);
-		responseVO.setCode(HttpStatus.OK.value());
-		responseVO.setMessage("Success");
-		responseVO.setData(productAndDetailVO);
-		return responseVO;
+		List<Detail> detailList = productRepo.selectAllDetails(productID);
+		productAndDetail.setDetail(detailList);
+		return productAndDetail;
 	}
 }

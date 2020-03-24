@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -33,6 +34,7 @@ public class Member {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@Transient
 	private String passwordReentered;
 	private String sex;
 	@Temporal(value = TemporalType.TIMESTAMP)

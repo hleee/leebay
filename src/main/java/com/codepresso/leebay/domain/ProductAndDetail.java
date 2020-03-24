@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProductAndDetailVO {
+public class ProductAndDetail {
 
 	private long id;
 	private String name;

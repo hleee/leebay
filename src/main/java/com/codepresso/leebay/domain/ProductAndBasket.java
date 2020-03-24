@@ -10,10 +10,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ResponseVO {
+public class ProductAndBasket {
 
-	private int code;
-	private String message;
-	private Object data;
+	private long memberID;
+	private long offsetValue;
 
 }

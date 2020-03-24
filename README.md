@@ -7,7 +7,7 @@
 ![Release](https://img.shields.io/badge/release-1.0-blue)
 
 리베이(가명)는 코드프레소 해커톤의 일환으로 개발한 단순 전자 상업 서비스이다.   
-스프링 부트와 마이바티스를 통해 전자 상거래의 기본적인 기능을 구현한 후, JPA를 통해 데이터베이스를 접속하도록 전환해 보았다.
+스프링 부트와 마이바티스를 통해 전자 상거래의 기본적인 기능을 구현한 후, JPA를 통해 데이터베이스에 접속하도록 전환해 보았다.
 
 ## 가용 기능
 이 플랫폼에서 지원되는 기능은 다음과 같다.
@@ -24,7 +24,7 @@
 </div>
 
 ## 사전 준비 사항
-이 서비스를 가동하기 위해서는 아래와 같은 프로그램을 우선 설치하여야 한다.  
+이 서비스를 가동하기 위해서는 우선 아래와 같은 프로그램을 설치하여야 한다.  
 | 프로그램 | 버전 정보 | 
 |---------|---------|
 | Eclipse IDE | [![Eclipse version](https://img.shields.io/badge/version-2019--09-blue)](https://www.eclipse.org/downloads/packages/release/2019-09/r/eclipse-ide-java-developers) |

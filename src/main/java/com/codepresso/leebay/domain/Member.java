@@ -2,8 +2,12 @@ package com.codepresso.leebay.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,17 +30,31 @@ import lombok.ToString;
 public class Member {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false)
 	private long id;
+
+	@Column(nullable = false, length = 50)
 	private String email;
+
+	@Column(nullable = false, length = 30)
 	private String name;
-	private String birthday;
+
+	@Column(nullable = false)
+	private Date birthday;
+
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@Column(nullable = false, length = 50)
 	private String password;
+
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@Transient
+	@Column(nullable = false)
 	private String passwordReentered;
+
+	@Enumerated(EnumType.STRING)
 	private String sex;
+
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date createdAt;
 

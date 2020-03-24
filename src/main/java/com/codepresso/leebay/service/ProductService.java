@@ -44,20 +44,20 @@ public class ProductService {
 			return productRepo.selectSixProducts(offsetValue);
 		} else {
 			LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
-			long memberID = logInToken.getMemberID();
+			long memberId = logInToken.getMemberId();
 			ProductAndBasket productAndBasket = new ProductAndBasket();
 			productAndBasket.setOffsetValue(offsetValue);
-			productAndBasket.setMemberID(memberID);
+			productAndBasket.setMemberId(memberId);
 			return productRepo.selectSixProductsWithBasketInfo(productAndBasket);
 		}
 	}
 
 	// 상세 조회
-	public ProductAndDetail selectOneDetail(String logInTokenString, long productID) throws Exception {
+	public ProductAndDetail selectOneDetail(String logInTokenString, long productId) throws Exception {
 		Response response = new Response();
 		Basket basket = new Basket();
 		LogInToken logInToken = new LogInToken();
-		Product product = productRepo.selectOneProductByID(productID);
+		Product product = productRepo.selectOneProductById(productId);
 		ProductAndDetail productAndDetail = new ProductAndDetail();
 		productAndDetail.setId(product.getId());
 		productAndDetail.setName(product.getName());
@@ -70,17 +70,17 @@ public class ProductService {
 			productAndDetail.setIsAdded(null);
 		} else {
 			logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
-			long memberID = logInToken.getMemberID();
-			basket.setMemberID(memberID);
-			basket.setProductID(productID);
-			basket = basketRepo.selectBasketByMemberIDAndProductID(basket);
+			long memberId = logInToken.getMemberId();
+			basket.setMemberId(memberId);
+			basket.setProductId(productId);
+			basket = basketRepo.selectBasketByMemberIdAndProductId(basket);
 			if (basket != null) {
 				productAndDetail.setIsAdded(true);
 			} else {
 				productAndDetail.setIsAdded(false);
 			}
 		}
-		List<Detail> detailList = productRepo.selectAllDetails(productID);
+		List<Detail> detailList = productRepo.selectAllDetails(productId);
 		productAndDetail.setDetail(detailList);
 		return productAndDetail;
 	}

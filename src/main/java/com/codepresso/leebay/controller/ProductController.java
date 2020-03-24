@@ -36,10 +36,10 @@ public class ProductController {
 	}
 
 	// 상세 조회
-	@GetMapping("/product/detail/{productID}")
+	@GetMapping("/product/detail/{productId}")
 	public Response selectOneDetail(@CookieValue(value = "accesstoken", required = false) String logInTokenString,
-			@PathVariable("productID") Long productID) throws Exception {
-		ProductAndDetail productAndDetail = productService.selectOneDetail(logInTokenString, productID);
+			@PathVariable("productId") Long productId) throws Exception {
+		ProductAndDetail productAndDetail = productService.selectOneDetail(logInTokenString, productId);
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");

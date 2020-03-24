@@ -2,8 +2,10 @@ package com.codepresso.leebay.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,10 +24,16 @@ import lombok.ToString;
 public class LogInToken {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false, length = 64)
 	private String logInToken;
-	private long memberID;
+
+	@Column(nullable = false)
+	private long memberId;
+
+	@Column(nullable = false, length = 50)
 	private String email;
+
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date createdAt;
 

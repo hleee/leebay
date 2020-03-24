@@ -24,9 +24,9 @@ public class BasketController {
 
 	// 장바구니 조회
 	@GetMapping("/basket")
-	public Response selectBasketByMemberID(@CookieValue(value = "accesstoken", required = false) String logInToken)
+	public Response selectBasketByMemberId(@CookieValue(value = "accesstoken", required = false) String logInToken)
 			throws Exception {
-		Product[] productsInBasketArray = basketService.selectBasketByMemberID(logInToken);
+		Product[] productsInBasketArray = basketService.selectBasketByMemberId(logInToken);
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");

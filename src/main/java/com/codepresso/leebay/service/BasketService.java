@@ -30,10 +30,10 @@ public class BasketService {
 	public ProductRepository productRepo;
 
 	// 장바구니 조회
-	public Product[] selectBasketByMemberID(String logInToken) throws Exception {
-		LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInToken);
-		long memberID = logInToken.getMemberID();
-		List<Product> basketList = basketRepo.select(memberID);
+	public Product[] selectBasketByMemberId(String logInTokenString) throws Exception {
+		LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
+		long memberId = logInToken.getMemberId();
+		List<Product> basketList = basketRepo.select(memberId);
 		Product[] productsInBasketArray = new Product[basketList.size()];
 		for (int i = 0; i < basketList.size(); i++) {
 			basketList.get(i).setIsAdded(true);
@@ -43,25 +43,25 @@ public class BasketService {
 	}
 
 	// 장바구니에 추가
-	public Product insertToBasket(String logInToken, Basket basket) throws Exception {
-		LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInToken);
-		long memberID = logInToken.getMemberID();
-		basket.setMemberID(memberID);
-		long productID = basket.getProductID();
+	public Product insertToBasket(String logInTokenString, Basket basket) throws Exception {
+		LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
+		long memberId = logInToken.getMemberId();
+		basket.setMemberId(memberId);
+		long productId = basket.getProductId();
 		basketRepo.insertToBasket(basket);
-		Product product = productRepo.selectOneProductByID(productID);
+		Product product = productRepo.selectOneProductById(productId);
 		product.setIsAdded(true);
 		return product;
 	}
 
 	// 장바구니에서 삭제
-	public Product deleteFromBasket(String logInToken, Basket basket) throws Exception {
-		LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInToken);
-		long memberID = logInToken.getMemberID();
-		basket.setMemberID(memberID);
-		long productID = basket.getProductID();
+	public Product deleteFromBasket(String logInTokenString, Basket basket) throws Exception {
+		LogInToken logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
+		long memberId = logInToken.getMemberId();
+		basket.setMemberId(memberId);
+		long productId = basket.getProductId();
 		basketRepo.deleteFromBasket(basket);
-		Product product = productRepo.selectOneProductByID(productID);
+		Product product = productRepo.selectOneProductById(productId);
 		product.setIsAdded(false);
 		return product;
 	}

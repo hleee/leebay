@@ -15,13 +15,21 @@ import lombok.ToString;
 public class ProductAndDetail {
 
 	private long id;
+	
 	private String name;
+	
 	private String image;
+	
 	private String description;
+	
 	private long originalPrice;
+	
 	private long discountedPrice;
+	
 	private Date createdAt;
+	
 	private Boolean isAdded;
+	
 	private Object detail;
 
 }

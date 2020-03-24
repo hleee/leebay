@@ -12,7 +12,8 @@ import lombok.ToString;
 @ToString
 public class ProductAndBasket {
 
-	private long memberID;
+	private long memberId;
+	
 	private long offsetValue;
 
 }

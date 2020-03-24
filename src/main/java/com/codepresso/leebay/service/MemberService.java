@@ -61,10 +61,10 @@ public class MemberService {
 			logInToken.setEmail(email);
 			String logInTokenString = TokenMaker.makeToken();
 			logInToken.setLogInToken(logInTokenString);
-			long memberID = memberInDB.getId();
-			logInToken.setMemberID(memberID);
+			long memberId = memberInDB.getId();
+			logInToken.setMemberId(memberId);
 			logInTokenRepo.insertOneLogInToken(logInToken);
-			logInToken = logInTokenRepo.selectOneRowByLogInToken(logInTokenString);
+			logInToken = logInTokenRepo.selectOneRowByLogInTokenString(logInTokenString);
 			return logInToken;
 		}
 	}
@@ -98,7 +98,7 @@ public class MemberService {
 			logger.info("Age OK.");
 		}
 		memberRepo.insertOneMember(member);
-		member = memberRepo.selectOneMemberByID(member.getId());
+		member = memberRepo.selectOneMemberById(member.getId());
 		return member;
 	}
 }

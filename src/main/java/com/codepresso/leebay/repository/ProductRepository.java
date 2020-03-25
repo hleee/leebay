@@ -2,6 +2,8 @@ package com.codepresso.leebay.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import com.codepresso.leebay.domain.Product;
@@ -9,11 +11,13 @@ import com.codepresso.leebay.domain.Product;
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
 	Product findById(long id);
-	
+
 	List<Product> findFirst6ByIdOrderByIdDesc();
-	
-	List<Product> findByIdEqualsBasketProductIdAndBasketMemberIdEqualsMemberIdOrderByBasketIdDesc(long memberId);
-	
-	
+
+//	List<Product> findByIdEqualsBasketProductIdAndBasketMemberIdEqualsMemberIdOrderByBasketIdDesc(long memberId);
+
+	Page<Product> findAll(Pageable paging);
+
+	Page<Product> findAllByMemberIdAndPage(long memberId, Pageable paging);
 
 }

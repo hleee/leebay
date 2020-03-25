@@ -1,8 +1,7 @@
 package com.codepresso.leebay.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +24,9 @@ public class ProductController {
 
 	// 여섯 개씩 조회 (한 페이지 호출)
 	@GetMapping("/product")
-	public Response selectSixProducts(@CookieValue(value = "accesstoken", required = false) String logInTokenString,
-			@RequestParam("page") Long page) throws Exception {
-		List<Product> productList = productService.selectSixProducts(logInTokenString, page);
+	public Response findAllPageable(@CookieValue(value = "accesstoken", required = false) String logInTokenString,
+			@RequestParam("page") int page) throws Exception {
+		Page<Product> productList = productService.findAllPageable(logInTokenString, page);
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");
@@ -37,9 +36,9 @@ public class ProductController {
 
 	// 상세 조회
 	@GetMapping("/product/detail/{productId}")
-	public Response selectOneDetail(@CookieValue(value = "accesstoken", required = false) String logInTokenString,
+	public Response findDetailByProductId(@CookieValue(value = "accesstoken", required = false) String logInTokenString,
 			@PathVariable("productId") Long productId) throws Exception {
-		ProductAndDetail productAndDetail = productService.selectOneDetail(logInTokenString, productId);
+		ProductAndDetail productAndDetail = productService.findDetailByProductId(logInTokenString, productId);
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");

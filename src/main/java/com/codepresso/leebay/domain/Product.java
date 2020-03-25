@@ -7,10 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -47,10 +46,7 @@ public class Product {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date createdAt;
 
+	@Transient
 	private Boolean isAdded;
-
-	@ManyToOne
-	@JoinColumn(name = "basket_id")
-	private Basket basket;
 
 }

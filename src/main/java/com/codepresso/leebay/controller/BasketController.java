@@ -23,22 +23,22 @@ public class BasketController {
 	public BasketService basketService;
 
 	// 장바구니 조회
-	@GetMapping("/basket")
-	public Response selectBasketByMemberId(@CookieValue(value = "accesstoken", required = false) String logInToken)
-			throws Exception {
-		Product[] productsInBasketArray = basketService.selectBasketByMemberId(logInToken);
-		Response response = new Response();
-		response.setCode(HttpStatus.OK.value());
-		response.setMessage("Success");
-		response.setData(productsInBasketArray);
-		return response;
-	}
+//	@GetMapping("/basket")
+//	public Response findBasketByMemberId(@CookieValue(value = "accesstoken", required = false) String logInToken)
+//			throws Exception {
+//		Product[] productsInBasketArray = basketService.findBasketByMemberId(logInToken);
+//		Response response = new Response();
+//		response.setCode(HttpStatus.OK.value());
+//		response.setMessage("Success");
+//		response.setData(productsInBasketArray);
+//		return response;
+//	}
 
 	// 장바구니에 추가
 	@PostMapping("/basket")
-	public Response insertToBasket(@CookieValue(value = "accesstoken", required = false) String logInToken,
-			@RequestBody Basket basketVO) throws Exception {
-		Product product = basketService.insertToBasket(logInToken, basketVO);
+	public Response saveBasket(@CookieValue(value = "accesstoken", required = false) String logInToken,
+			@RequestBody Basket basket) throws Exception {
+		Product product = basketService.saveBasket(logInToken, basket);
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");
@@ -48,9 +48,9 @@ public class BasketController {
 
 	// 장바구니에서 삭제
 	@DeleteMapping("/basket")
-	public Response deleteFromBasket(@CookieValue(value = "accesstoken", required = false) String logInToken,
-			@RequestBody Basket basketVO) throws Exception {
-		Product product = basketService.deleteFromBasket(logInToken, basketVO);
+	public Response deleteBasket(@CookieValue(value = "accesstoken", required = false) String logInToken,
+			@RequestBody Basket basket) throws Exception {
+		Product product = basketService.deleteBasket(logInToken, basket);
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");

@@ -18,8 +18,8 @@ public class BannerController {
 	public BannerService bannerService;
 
 	@GetMapping
-	public Response selectFiveLatestBanners() throws Exception {
-		Banner[] bannerArray = bannerService.selectFiveLatestBanners();
+	public Response findFirst5ByIdOrderByIdDesc() throws Exception {
+		Banner[] bannerArray = bannerService.findFirst5ByIdOrderByIdDesc();
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");

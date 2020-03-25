@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.codepresso.leebay.domain.Basket;
 import com.codepresso.leebay.domain.LogInToken;
@@ -29,21 +30,22 @@ public class BasketService {
 	public ProductRepository productRepo;
 
 	// 장바구니 조회
-	public Product[] selectBasketByMemberId(String logInTokenString) throws Exception {
-		LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
-		long memberId = logInToken.getMemberId();
-		List<Product> productsInBasketList = productRepo
-				.findByIdEqualsBasketProductIdAndBasketMemberIdEqualsMemberIdOrderByBasketIdDesc(memberId);
-		Product[] productsInBasketArray = new Product[productsInBasketList.size()];
-		for (int i = 0; i < productsInBasketList.size(); i++) {
-			productsInBasketList.get(i).setIsAdded(true);
-			productsInBasketArray[i] = productsInBasketList.get(i);
-		}
-		return productsInBasketArray;
-	}
+//	public Product[] findBasketByMemberId(String logInTokenString) throws Exception {
+//		LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
+//		long memberId = logInToken.getMemberId();
+//		List<Product> productsInBasketList = productRepo
+//				.findByIdEqualsBasketProductIdAndBasketMemberIdEqualsMemberIdOrderByBasketIdDesc(memberId);
+//		Product[] productsInBasketArray = new Product[productsInBasketList.size()];
+//		for (int i = 0; i < productsInBasketList.size(); i++) {
+//			productsInBasketList.get(i).setIsAdded(true);
+//			productsInBasketArray[i] = productsInBasketList.get(i);
+//		}
+//		return productsInBasketArray;
+//	}
 
 	// 장바구니에 추가
-	public Product insertToBasket(String logInTokenString, Basket basket) throws Exception {
+	@Transactional
+	public Product saveBasket(String logInTokenString, Basket basket) throws Exception {
 		LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
 		long memberId = logInToken.getMemberId();
 		basket.setMemberId(memberId);
@@ -55,7 +57,8 @@ public class BasketService {
 	}
 
 	// 장바구니에서 삭제
-	public Product deleteFromBasket(String logInTokenString, Basket basket) throws Exception {
+	@Transactional
+	public Product deleteBasket(String logInTokenString, Basket basket) throws Exception {
 		LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
 		long memberId = logInToken.getMemberId();
 		basket.setMemberId(memberId);

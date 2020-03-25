@@ -5,13 +5,16 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.codepresso.leebay.domain.Basket;
 import com.codepresso.leebay.domain.Detail;
 import com.codepresso.leebay.domain.LogInToken;
 import com.codepresso.leebay.domain.Product;
-import com.codepresso.leebay.domain.ProductAndBasket;
 import com.codepresso.leebay.domain.ProductAndDetail;
 import com.codepresso.leebay.repository.BasketRepository;
 import com.codepresso.leebay.repository.DetailRepository;
@@ -40,22 +43,19 @@ public class ProductService {
 	public DetailRepository detailRepo;
 
 	// 여섯 개씩 조회 (한 페이지 호출)
-	public List<Product> selectSixProducts(String logInTokenString, long page) throws Exception {
-		long offsetValue = (page - 1) * 6;
+	public Page<Product> findAllPageable(String logInTokenString, int page) throws Exception {
+		Pageable paging = PageRequest.of(page - 1, 6, Sort.Direction.DESC, "id");
 		if (logInTokenString == null) {
-			return productRepo.selectSixProducts(offsetValue);
+			return productRepo.findAll(paging);
 		} else {
 			LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
 			long memberId = logInToken.getMemberId();
-			ProductAndBasket productAndBasket = new ProductAndBasket();
-			productAndBasket.setOffsetValue(offsetValue);
-			productAndBasket.setMemberId(memberId);
-			return productRepo.selectSixProductsWithBasketInfo(productAndBasket);
+			return productRepo.findAllByMemberIdAndPage(memberId, paging);
 		}
 	}
 
 	// 상세 조회
-	public ProductAndDetail selectOneDetail(String logInTokenString, long productId) throws Exception {
+	public ProductAndDetail findDetailByProductId(String logInTokenString, long productId) throws Exception {
 		Basket basket = new Basket();
 		LogInToken logInToken = new LogInToken();
 		Product product = productRepo.findById(productId);

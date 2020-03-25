@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.codepresso.leebay.domain.EmailCheckToken;
 import com.codepresso.leebay.domain.LogInToken;
@@ -18,6 +19,7 @@ import com.codepresso.leebay.repository.MemberRepository;
 import com.codepresso.leebay.util.TokenMaker;
 
 @Service
+@Transactional
 public class MemberService {
 
 	static Logger logger = LoggerFactory.getLogger(MemberService.class);

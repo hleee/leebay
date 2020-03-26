@@ -1,6 +1,6 @@
 package com.codepresso.leebay.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
@@ -15,21 +15,13 @@ import lombok.ToString;
 public class ProductAndDetail {
 
 	private long id;
-	
 	private String name;
-	
 	private String image;
-	
 	private String description;
-	
 	private long originalPrice;
-	
 	private long discountedPrice;
-	
-	private Date createdAt;
-	
+	private LocalDateTime createdAt;
 	private Boolean isAdded;
-	
 	private Object detail;
 
 }

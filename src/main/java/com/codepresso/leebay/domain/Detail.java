@@ -1,14 +1,13 @@
 package com.codepresso.leebay.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.PrePersist;
 
 import org.springframework.stereotype.Component;
 
@@ -27,17 +26,21 @@ public class Detail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
 	private long id;
-	
+
 	@Column(nullable = false)
 	private long productId;
-	
+
 	@Column(length = 200)
 	private String description;
-	
+
 	@Column(length = 200)
 	private String image;
-	
-	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date createdAt;
+
+	private LocalDateTime createdAt;
+
+	@PrePersist
+	protected void createdAt() {
+		this.createdAt = LocalDateTime.now();
+	}
 
 }

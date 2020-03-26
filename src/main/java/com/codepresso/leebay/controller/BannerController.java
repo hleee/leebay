@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codepresso.leebay.domain.Banner;
 import com.codepresso.leebay.domain.Response;
 import com.codepresso.leebay.service.BannerService;
 
@@ -18,12 +17,11 @@ public class BannerController {
 	public BannerService bannerService;
 
 	@GetMapping
-	public Response findFirst5ByIdOrderByIdDesc() throws Exception {
-		Banner[] bannerArray = bannerService.findFirst5ByIdOrderByIdDesc();
+	public Response findAllPageable() throws Exception {
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");
-		response.setData(bannerArray);
+		response.setData(bannerService.findAllPageable());
 		return response;
 	}
 }

@@ -1,10 +1,12 @@
 package com.codepresso.leebay.service;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.codepresso.leebay.domain.Banner;
@@ -18,12 +20,8 @@ public class BannerService {
 	@Autowired
 	public BannerRepository bannerRepo;
 
-	public Banner[] findFirst5ByIdOrderByIdDesc() throws Exception {
-		List<Banner> bannerList = bannerRepo.findFirst5ByIdOrderByIdDesc();
-		Banner[] bannerArray = new Banner[bannerList.size()];
-		for (int i = 0; i < bannerList.size(); i++) {
-			bannerArray[i] = bannerList.get(i);
-		}
-		return bannerArray;
+	public Page<Banner> findAllPageable() throws Exception {
+		Pageable paging = PageRequest.of(0, 5, Sort.Direction.DESC, "id");
+		return bannerRepo.findAll(paging);
 	}
 }

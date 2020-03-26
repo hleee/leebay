@@ -45,13 +45,13 @@ public class ProductService {
 	// 여섯 개씩 조회 (한 페이지 호출)
 	public Page<Product> findAllPageable(String logInTokenString, int page) throws Exception {
 		Pageable paging = PageRequest.of(page - 1, 6, Sort.Direction.DESC, "id");
-		if (logInTokenString == null) {
+//		if (logInTokenString == null) {
 			return productRepo.findAll(paging);
-		} else {
-			LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
-			long memberId = logInToken.getMemberId();
-			return productRepo.findAllByMemberIdAndPage(memberId, paging);
-		}
+//		} else {
+//			LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
+//			long memberId = logInToken.getMemberId();
+//			return productRepo.findAllByMemberIdAndPage(memberId, paging);
+//		}
 	}
 
 	// 상세 조회
@@ -72,9 +72,7 @@ public class ProductService {
 		} else {
 			logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
 			long memberId = logInToken.getMemberId();
-			basket.setMemberId(memberId);
-			basket.setProductId(productId);
-			basket = basketRepo.findByMemberIdAndProductId(basket);
+			basket = basketRepo.findByMemberIdAndProductId(memberId, productId);
 			if (basket != null) {
 				productAndDetail.setIsAdded(true);
 			} else {

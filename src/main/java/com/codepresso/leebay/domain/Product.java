@@ -49,4 +49,9 @@ public class Product {
 	@Transient
 	private Boolean isAdded;
 
+//	@PrePersist
+//	protected void createdAt() {
+//		this.createdAt = LocalDateTime.now();
+//	}
+
 }

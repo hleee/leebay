@@ -34,7 +34,7 @@ public class MemberService {
 	public EmailCheckTokenRepository emailCheckTokenRepo;
 
 	// 이메일 중복 확인
-	public EmailCheckToken insertOneEmailCheckToken(Member enteredEmail) throws Exception {
+	public EmailCheckToken saveEmailCheckToken(Member enteredEmail) throws Exception {
 		EmailCheckToken emailCheckToken = new EmailCheckToken();
 		Member member = new Member();
 		String email = enteredEmail.getEmail();
@@ -53,14 +53,15 @@ public class MemberService {
 	}
 
 	// 로그인
-	public LogInToken insertOneLogInToken(Member member) throws Exception {
+	public LogInToken saveLogInToken(Member member) throws Exception {
 		LogInToken logInToken = new LogInToken();
-		Member memberInDB = memberRepo.findByEmailAndPassword(member);
+		String email = member.getEmail();
+		String password = member.getPassword();
+		Member memberInDB = memberRepo.findByEmailAndPassword(email, password);
 		if (memberInDB == null) {
 			logger.info("ID-password pair not found.");
 			return logInToken;
 		} else {
-			String email = member.getEmail();
 			logInToken.setEmail(email);
 			String logInTokenString = TokenMaker.makeToken();
 			logInToken.setLogInToken(logInTokenString);
@@ -73,7 +74,7 @@ public class MemberService {
 	}
 
 	// 회원 가입
-	public Member insertOneMember(String emailCheckTokenString, Member member) throws Exception {
+	public Member saveMember(String emailCheckTokenString, Member member) throws Exception {
 		Member emptyMember = new Member();
 		if (emailCheckTokenString == null) {
 			logger.info("Check for email duplication.");
@@ -91,14 +92,16 @@ public class MemberService {
 		Date todaysDate = new Date();
 		String todaysDateFormatted = dateFormat.format(todaysDate);
 		int todaysDateInt = Integer.parseInt(todaysDateFormatted);
-		String enteredBirthday = member.getBirthday().toString().replaceAll("\\p{Punct}", "");
-		int enteredBirthdayInt = Integer.parseInt(enteredBirthday);
+		Date enteredBirthday = member.getBirthday();
+		String enteredBirthdayFormatted = dateFormat.format(enteredBirthday);
+		int enteredBirthdayInt = Integer.parseInt(enteredBirthdayFormatted);
 		if (todaysDateInt - enteredBirthdayInt < 80000) {
 			logger.info("Underage.");
 			return emptyMember;
 		} else {
 			logger.info("Age OK.");
 		}
+		logger.info("member: " + member);
 		memberRepo.save(member);
 		member = memberRepo.findById(member.getId());
 		return member;

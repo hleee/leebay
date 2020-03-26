@@ -6,6 +6,6 @@ import com.codepresso.leebay.domain.Basket;
 
 public interface BasketRepository extends CrudRepository<Basket, Long> {
 
-	Basket findByMemberIdAndProductId(Basket basket);
+	Basket findByMemberIdAndProductId(long memberId, long productId);
 
 }

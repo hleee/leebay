@@ -23,8 +23,8 @@ public class MemberController {
 
 	// 이메일 중복 확인
 	@PostMapping("/checkEmail")
-	public Response insertOneEmailCheckToken(@RequestBody Member enteredEmail) throws Exception {
-		EmailCheckToken emailCheckToken = memberService.insertOneEmailCheckToken(enteredEmail);
+	public Response saveEmailCheckToken(@RequestBody Member enteredEmail) throws Exception {
+		EmailCheckToken emailCheckToken = memberService.saveEmailCheckToken(enteredEmail);
 		Response response = new Response();
 		if (emailCheckToken != null) {
 			response.setCode(HttpStatus.OK.value());
@@ -40,8 +40,8 @@ public class MemberController {
 
 	// 로그인
 	@PostMapping("/logIn")
-	public Response insertOneLogInToken(@RequestBody Member member) throws Exception {
-		LogInToken logInToken = memberService.insertOneLogInToken(member);
+	public Response saveLogInToken(@RequestBody Member member) throws Exception {
+		LogInToken logInToken = memberService.saveLogInToken(member);
 		Response response = new Response();
 		if (logInToken == null) {
 			response.setCode(HttpStatus.BAD_REQUEST.value());
@@ -57,9 +57,9 @@ public class MemberController {
 
 	// 회원 가입
 	@PostMapping("/signUp")
-	public Response insertOneMember(@CookieValue(value = "checktoken", required = false) String emailCheckTokenString,
+	public Response saveMember(@CookieValue(value = "checktoken", required = false) String emailCheckTokenString,
 			@RequestBody Member member) throws Exception {
-		Member memberResult = memberService.insertOneMember(emailCheckTokenString, member);
+		Member memberResult = memberService.saveMember(emailCheckTokenString, member);
 		Response response = new Response();
 		if (memberResult == null) {
 			response.setCode(HttpStatus.BAD_REQUEST.value());

@@ -1,14 +1,13 @@
 package com.codepresso.leebay.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.PrePersist;
 
 import org.springframework.stereotype.Component;
 
@@ -31,7 +30,11 @@ public class Banner {
 	@Column(nullable = false, length = 100)
 	private String content;
 
-	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date createdAt;
+	private LocalDateTime createdAt;
+
+	@PrePersist
+	protected void createdAt() {
+		this.createdAt = LocalDateTime.now();
+	}
 
 }

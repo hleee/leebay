@@ -1,5 +1,6 @@
 package com.codepresso.leebay.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -39,6 +41,7 @@ public class Member {
 	private String name;
 
 	@Column(nullable = false)
+	@Temporal(value = TemporalType.DATE)
 	private Date birthday;
 
 	@JsonProperty(access = Access.WRITE_ONLY)
@@ -52,7 +55,11 @@ public class Member {
 
 	private String sex;
 
-	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date createdAt;
+	private LocalDateTime createdAt;
+	
+	@PrePersist
+	protected void createdAt() {
+		this.createdAt = LocalDateTime.now();
+	}
 
 }

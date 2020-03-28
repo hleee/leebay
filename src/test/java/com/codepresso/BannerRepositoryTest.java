@@ -1,7 +1,5 @@
 package com.codepresso;
 
-import java.util.Date;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -27,7 +25,6 @@ public class BannerRepositoryTest {
 	public void testInsertBanner() {
 		Banner banner = new Banner();
 		banner.setContent("All books off 50%");
-		banner.setCreatedAt(new Date());
 		bannerRepo.save(banner);
 	}
 

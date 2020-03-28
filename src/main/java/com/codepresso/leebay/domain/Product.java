@@ -1,14 +1,13 @@
 package com.codepresso.leebay.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
@@ -43,15 +42,14 @@ public class Product {
 
 	private long discountedPrice;
 
-	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date createdAt;
+	private LocalDateTime createdAt;
 
 	@Transient
 	private Boolean isAdded;
 
-//	@PrePersist
-//	protected void createdAt() {
-//		this.createdAt = LocalDateTime.now();
-//	}
+	@PrePersist
+	protected void createdAt() {
+		this.createdAt = LocalDateTime.now();
+	}
 
 }

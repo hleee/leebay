@@ -1,5 +1,7 @@
 package com.codepresso.leebay.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -18,6 +20,8 @@ import com.codepresso.leebay.service.MemberService;
 @RequestMapping("/member/*")
 public class MemberController {
 
+	static Logger logger = LoggerFactory.getLogger(MemberController.class);
+
 	@Autowired
 	public MemberService memberService;
 
@@ -26,13 +30,13 @@ public class MemberController {
 	public Response saveEmailCheckToken(@RequestBody Member enteredEmail) throws Exception {
 		EmailCheckToken emailCheckToken = memberService.saveEmailCheckToken(enteredEmail);
 		Response response = new Response();
-		if (emailCheckToken != null) {
-			response.setCode(HttpStatus.OK.value());
-			response.setMessage("Success");
-			response.setData(emailCheckToken);
-		} else {
+		if (emailCheckToken.getEmailCheckToken() == null) {
 			response.setCode(HttpStatus.BAD_REQUEST.value());
 			response.setMessage("Failure");
+			response.setData(emailCheckToken);
+		} else {
+			response.setCode(HttpStatus.OK.value());
+			response.setMessage("Success");
 			response.setData(emailCheckToken);
 		}
 		return response;
@@ -43,7 +47,7 @@ public class MemberController {
 	public Response saveLogInToken(@RequestBody Member member) throws Exception {
 		LogInToken logInToken = memberService.saveLogInToken(member);
 		Response response = new Response();
-		if (logInToken == null) {
+		if (logInToken.getLogInToken() == null) {
 			response.setCode(HttpStatus.BAD_REQUEST.value());
 			response.setMessage("Failure");
 			response.setData(logInToken);
@@ -61,7 +65,7 @@ public class MemberController {
 			@RequestBody Member member) throws Exception {
 		Member memberResult = memberService.saveMember(emailCheckTokenString, member);
 		Response response = new Response();
-		if (memberResult == null) {
+		if (memberResult.getCreatedAt() == null) {
 			response.setCode(HttpStatus.BAD_REQUEST.value());
 			response.setMessage("Failure");
 			response.setData(memberResult);

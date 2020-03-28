@@ -6,6 +6,6 @@ import com.codepresso.leebay.domain.EmailCheckToken;
 
 public interface EmailCheckTokenRepository extends CrudRepository<EmailCheckToken, String> {
 
-	EmailCheckToken findByEmailCheckToken(String emailCheckTokenString);
+	EmailCheckToken findByEmailCheckToken(String emailCheckToken);
 
 }

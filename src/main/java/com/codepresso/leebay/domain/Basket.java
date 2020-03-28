@@ -46,8 +46,8 @@ public class Basket {
 		this.createdAt = LocalDateTime.now();
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "productInBasketId", referencedColumnName = "id", insertable = false, updatable = false)
-	private Product product;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "productInBasketId", referencedColumnName = "id", insertable = false, updatable = false)
+//	private Product product;
 
 }

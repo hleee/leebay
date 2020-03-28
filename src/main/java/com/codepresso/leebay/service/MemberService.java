@@ -59,7 +59,7 @@ public class MemberService {
 		String password = member.getPassword();
 		Member memberInDB = memberRepo.findByEmailAndPassword(email, password);
 		if (memberInDB == null) {
-			logger.info("ID-password pair not found.");
+			logger.info("Email-password pair not found.");
 			return logInToken;
 		} else {
 			logInToken.setEmail(email);

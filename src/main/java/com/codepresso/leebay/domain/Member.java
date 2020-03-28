@@ -32,23 +32,30 @@ public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
-	private long id;
+	private Long id;
+
 	@Column(nullable = false, length = 50)
 	private String email;
+
 	@Column(nullable = false, length = 30)
 	private String name;
+
 	@Column(nullable = false)
 	@Temporal(value = TemporalType.DATE)
 	private Date birthday;
+
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(nullable = false, length = 50)
 	private String password;
+
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@Transient
 	@Column(nullable = false)
 	private String passwordReentered;
+
 	@Column(nullable = false)
 	private String sex;
+
 	private LocalDateTime createdAt;
 
 	@PrePersist

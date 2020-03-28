@@ -23,10 +23,13 @@ public class LogInToken {
 	@Id
 	@Column(nullable = false, length = 64)
 	private String logInToken;
+	
 	@Column(nullable = false)
-	private long memberId;
+	private Long memberId;
+	
 	@Column(nullable = false, length = 50)
 	private String email;
+	
 	private LocalDateTime createdAt;
 
 	@PrePersist

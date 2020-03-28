@@ -26,7 +26,7 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
-	private long id;
+	private Long id;
 
 	@Column(nullable = false, length = 30)
 	private String name;
@@ -38,9 +38,9 @@ public class Product {
 	private String description;
 
 	@Column(nullable = false)
-	private long originalPrice;
+	private Long originalPrice;
 
-	private long discountedPrice;
+	private Long discountedPrice;
 
 	private LocalDateTime createdAt;
 

@@ -23,8 +23,10 @@ public class EmailCheckToken {
 	@Id
 	@Column(nullable = false, length = 64)
 	private String emailCheckToken;
+	
 	@Column(nullable = false, length = 50)
 	private String email;
+	
 	private LocalDateTime createdAt;
 
 	@PrePersist

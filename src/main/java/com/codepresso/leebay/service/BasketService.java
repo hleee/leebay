@@ -63,7 +63,7 @@ public class BasketService {
 		long memberId = logInToken.getMemberId();
 		basket.setMemberId(memberId);
 		long productId = basket.getProductId();
-		basketRepo.delete(basket);
+		basketRepo.deleteByMemberIdAndProductId(memberId, productId);
 		Product product = productRepo.findById(productId);
 		product.setIsAdded(false);
 		return product;

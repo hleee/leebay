@@ -25,10 +25,10 @@ public class Detail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
-	private long id;
+	private Long id;
 
 	@Column(nullable = false)
-	private long productId;
+	private Long productId;
 
 	@Column(length = 200)
 	private String description;

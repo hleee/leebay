@@ -8,4 +8,5 @@ public interface BasketRepository extends CrudRepository<Basket, Long> {
 
 	Basket findByMemberIdAndProductId(long memberId, long productId);
 
+	long deleteByMemberIdAndProductId(long memberId, long productId);
 }

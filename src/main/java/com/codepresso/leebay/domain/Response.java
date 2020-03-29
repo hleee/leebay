@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 public class Response {
 
-	private Integer code;
+	private int code;
 	private String message;
 	private Object data;
 

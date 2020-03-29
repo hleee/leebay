@@ -28,13 +28,13 @@ public class Basket {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
-	private Long id;
+	private long id;
 
 	@Column(nullable = false)
 	private Long memberId;
 
 	@Column(nullable = false)
-	private Long productId;
+	private long productId;
 
 	private LocalDateTime createdAt;
 
@@ -42,9 +42,5 @@ public class Basket {
 	protected void createdAt() {
 		this.createdAt = LocalDateTime.now();
 	}
-
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "productInBasketId", referencedColumnName = "id", insertable = false, updatable = false)
-//	private Product product;
 
 }

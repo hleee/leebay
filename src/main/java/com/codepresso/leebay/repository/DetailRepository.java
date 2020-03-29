@@ -8,6 +8,6 @@ import com.codepresso.leebay.domain.Detail;
 
 public interface DetailRepository extends CrudRepository<Detail, Long> {
 
-	List<Detail> findByProductId(long productId);
+	List<Detail> findByProductIdOrderByIdDesc(long productId);
 
 }

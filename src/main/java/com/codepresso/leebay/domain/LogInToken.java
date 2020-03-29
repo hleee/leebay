@@ -25,7 +25,7 @@ public class LogInToken {
 	private String logInToken;
 	
 	@Column(nullable = false)
-	private Long memberId;
+	private long memberId;
 	
 	@Column(nullable = false, length = 50)
 	private String email;

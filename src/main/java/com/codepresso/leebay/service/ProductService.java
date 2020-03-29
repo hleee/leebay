@@ -43,15 +43,31 @@ public class ProductService {
 	public DetailRepository detailRepo;
 
 	// 여섯 개씩 조회 (한 페이지 호출)
-	public Page<Product> findAllPageable(String logInTokenString, int page) throws Exception {
+	public Product[] findAllPageable(String logInTokenString, int page) throws Exception {
 		Pageable paging = PageRequest.of(page - 1, 6, Sort.Direction.DESC, "id");
-//		if (logInTokenString == null) {
-			return productRepo.findAll(paging);
-//		} else {
-//			LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
-//			long memberId = logInToken.getMemberId();
-//			return productRepo.findAllByMemberIdAndPage(memberId, paging);
-//		}
+		Page<Product> productPage = productRepo.findAll(paging);
+		Product[] productPageArray = new Product[productPage.getSize()];
+		if (logInTokenString == null) {
+			for (int i = 0; i < productPage.getSize(); i++) {
+				productPageArray[i] = productPage.getContent().get(i);
+			}
+		} else {
+			LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
+			long memberId = logInToken.getMemberId();
+			List<Basket> memberBasket = basketRepo.findByMemberId(memberId);
+			for (int i = 0; i < productPage.getSize(); i++) {
+				Product product = productPage.getContent().get(i);
+				for (int j = 0; j < memberBasket.size(); j++) {
+					if (product.getId() == memberBasket.get(j).getProductId()) {
+						productPage.getContent().get(i).setIsAdded(true);
+					} else {
+						productPage.getContent().get(i).setIsAdded(false);
+					}
+				}
+				productPageArray[i] = productPage.getContent().get(i);
+			}
+		}
+		return productPageArray;
 	}
 
 	// 상세 조회
@@ -79,7 +95,7 @@ public class ProductService {
 				productAndDetail.setIsAdded(false);
 			}
 		}
-		List<Detail> detailList = detailRepo.findByProductId(productId);
+		List<Detail> detailList = detailRepo.findByProductIdOrderByIdDesc(productId);
 		productAndDetail.setDetail(detailList);
 		return productAndDetail;
 	}

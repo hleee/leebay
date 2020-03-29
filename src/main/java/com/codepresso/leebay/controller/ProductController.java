@@ -1,7 +1,6 @@
 package com.codepresso.leebay.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +25,11 @@ public class ProductController {
 	@GetMapping("/product")
 	public Response findAllPageable(@CookieValue(value = "accesstoken", required = false) String logInTokenString,
 			@RequestParam("page") int page) throws Exception {
-		Page<Product> productList = productService.findAllPageable(logInTokenString, page);
+		Product[] productPageArray = productService.findAllPageable(logInTokenString, page);
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");
-		response.setData(productList);
+		response.setData(productPageArray);
 		return response;
 	}
 

@@ -13,7 +13,5 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 //	List<Product> findByIdEqualsBasketProductIdAndBasketMemberIdEqualsMemberIdOrderByBasketIdDesc(long memberId);
 
 	Page<Product> findAll(Pageable paging);
-
-//	Page<Product> findAllByMemberIdAndPage(long memberId, Pageable paging);
-
+	
 }

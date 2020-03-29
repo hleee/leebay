@@ -14,11 +14,11 @@ import lombok.ToString;
 @ToString
 public class ProductAndDetail {
 
-	private Long id;
+	private long id;
 	private String name;
 	private String image;
 	private String description;
-	private Long originalPrice;
+	private long originalPrice;
 	private Long discountedPrice;
 	private LocalDateTime createdAt;
 	private Boolean isAdded;

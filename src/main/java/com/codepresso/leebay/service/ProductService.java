@@ -46,10 +46,10 @@ public class ProductService {
 	public Product[] findAllPageable(String logInTokenString, int page) throws Exception {
 		Pageable paging = PageRequest.of(page - 1, 6, Sort.Direction.DESC, "id");
 		Page<Product> productPage = productRepo.findAll(paging);
-		Product[] productPageArray = new Product[productPage.getSize()];
+		Product[] productArray = new Product[productPage.getSize()];
 		if (logInTokenString == null) {
 			for (int i = 0; i < productPage.getSize(); i++) {
-				productPageArray[i] = productPage.getContent().get(i);
+				productArray[i] = productPage.getContent().get(i);
 			}
 		} else {
 			LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
@@ -64,10 +64,10 @@ public class ProductService {
 						productPage.getContent().get(i).setIsAdded(false);
 					}
 				}
-				productPageArray[i] = productPage.getContent().get(i);
+				productArray[i] = productPage.getContent().get(i);
 			}
 		}
-		return productPageArray;
+		return productArray;
 	}
 
 	// 상세 조회

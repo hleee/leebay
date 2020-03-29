@@ -30,18 +30,19 @@ public class BasketService {
 	public ProductRepository productRepo;
 
 	// 장바구니 조회
-//	public Product[] findBasketByMemberId(String logInTokenString) throws Exception {
-//		LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
-//		long memberId = logInToken.getMemberId();
-//		List<Product> productsInBasketList = productRepo
-//				.findByIdEqualsBasketProductIdAndBasketMemberIdEqualsMemberIdOrderByBasketIdDesc(memberId);
-//		Product[] productsInBasketArray = new Product[productsInBasketList.size()];
-//		for (int i = 0; i < productsInBasketList.size(); i++) {
-//			productsInBasketList.get(i).setIsAdded(true);
-//			productsInBasketArray[i] = productsInBasketList.get(i);
-//		}
-//		return productsInBasketArray;
-//	}
+	public Product[] findBasketByMemberId(String logInTokenString) throws Exception {
+		LogInToken logInToken = logInTokenRepo.findByLogInToken(logInTokenString);
+		long memberId = logInToken.getMemberId();
+		List<Basket> memberBasket = basketRepo.findByMemberId(memberId);
+		Product[] productsInBasketArray = new Product[memberBasket.size()];
+		for (int i = 0; i < memberBasket.size(); i++) {
+			long productId = memberBasket.get(i).getProductId();
+			Product product = productRepo.findById(productId);
+			product.setIsAdded(true);
+			productsInBasketArray[i] = product;
+		}
+		return productsInBasketArray;
+	}
 
 	// 장바구니에 추가
 	@Transactional

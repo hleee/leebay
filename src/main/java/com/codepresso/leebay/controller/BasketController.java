@@ -27,16 +27,16 @@ public class BasketController {
 	public BasketService basketService;
 
 	// 장바구니 조회
-//	@GetMapping("/basket")
-//	public Response findBasketByMemberId(@CookieValue(value = "accesstoken", required = false) String logInToken)
-//			throws Exception {
-//		Product[] productsInBasketArray = basketService.findBasketByMemberId(logInToken);
-//		Response response = new Response();
-//		response.setCode(HttpStatus.OK.value());
-//		response.setMessage("Success");
-//		response.setData(productsInBasketArray);
-//		return response;
-//	}
+	@GetMapping("/basket")
+	public Response findBasketByMemberId(@CookieValue(value = "accesstoken", required = false) String logInToken)
+			throws Exception {
+		Product[] productsInBasketArray = basketService.findBasketByMemberId(logInToken);
+		Response response = new Response();
+		response.setCode(HttpStatus.OK.value());
+		response.setMessage("Success");
+		response.setData(productsInBasketArray);
+		return response;
+	}
 
 	// 장바구니에 추가
 	@PostMapping("/basket")

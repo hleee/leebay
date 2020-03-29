@@ -25,11 +25,11 @@ public class ProductController {
 	@GetMapping("/product")
 	public Response findAllPageable(@CookieValue(value = "accesstoken", required = false) String logInTokenString,
 			@RequestParam("page") int page) throws Exception {
-		Product[] productPageArray = productService.findAllPageable(logInTokenString, page);
+		Product[] productArray = productService.findAllPageable(logInTokenString, page);
 		Response response = new Response();
 		response.setCode(HttpStatus.OK.value());
 		response.setMessage("Success");
-		response.setData(productPageArray);
+		response.setData(productArray);
 		return response;
 	}
 

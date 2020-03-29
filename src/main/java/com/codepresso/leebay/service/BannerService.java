@@ -20,8 +20,13 @@ public class BannerService {
 	@Autowired
 	public BannerRepository bannerRepo;
 
-	public Page<Banner> findAllPageable() throws Exception {
+	public Banner[] findAllPageable() throws Exception {
 		Pageable paging = PageRequest.of(0, 5, Sort.Direction.DESC, "id");
-		return bannerRepo.findAll(paging);
+		Page<Banner> bannerPage = bannerRepo.findAll(paging);
+		Banner[] bannerArray = new Banner[bannerPage.getSize()];
+		for (int i = 0; i < bannerPage.getSize(); i++) {
+			bannerArray[i] = bannerPage.getContent().get(i);
+		}
+		return bannerArray;
 	}
 }
